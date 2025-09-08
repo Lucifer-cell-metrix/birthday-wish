@@ -32,16 +32,14 @@ body, html {
   width: 100%;
 }
 
-/* Cartoon GIF */
-#gif-container {
+/* Cartoon Video */
+#birthday-video {
   display: none;
   position: absolute;
-  z-index: 2;
-}
-#gif-container img {
-  width: 200px;
+  width: 250px;
   border-radius: 15px;
   box-shadow: 0 0 20px rgba(255,0,0,0.8);
+  z-index: 2;
 }
 
 /* Flipbook */
@@ -54,43 +52,65 @@ body, html {
 }
 
 .book {
+  width: 100%;
+  height: 100%;
   position: relative;
-  width: 300px;
-  height: 400px;
-  perspective: 2000px; /* important for 3D flip */
+  transform-style: preserve-3d;
 }
 
 .page {
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 0;
-  left: 0;
-  transform-style: preserve-3d;  /* allow front/back */
-  transform-origin: left;
-  transition: transform 1s ease-in-out;
+  top: 0; left: 0;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 1s ease-in-out, box-shadow 1s;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.page .front,
+/* Flip class */
+.page.flipped {
+  transform: rotateY(-180deg);
+}
+
+/* Stacking */
+.page:nth-child(1) { z-index: 3; }
+.page:nth-child(2) { z-index: 2; }
+.page:nth-child(3) { z-index: 1; }
+
+.page .front, 
 .page .back {
-  position: absolute;
   width: 100%;
   height: 100%;
-  backface-visibility: hidden;  /* hide the backside when flipped */
+  position: absolute;
+  backface-visibility: hidden;
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 24px;
-  font-family: 'Dancing Script', cursive;
-  background: #fff;
-  border: 2px solid #000;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: bold;
+  font-family: "Dancing Script", cursive;
+  padding: 20px;
+  text-align: center;
+  box-sizing: border-box;
+  border: 3px solid gold;
   border-radius: 12px;
 }
 
-.page .back {
-  transform: rotateY(180deg); /* place back face behind */
+/* Fancy Gradients */
+.page .front {
+  background: linear-gradient(135deg, #fff8e7, #ffe7f3);
+  color: #d6336c;
 }
 
+.page .back {
+  background: linear-gradient(135deg, #e7f5ff, #f3f0ff);
+  color: #364fc7;
+  transform: rotateY(180deg);
+}
 
 /* Glow */
 .page .front span, 
@@ -98,5 +118,3 @@ body, html {
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.8),
                0 0 20px rgba(255, 192, 203, 0.8);
 }
-
-
