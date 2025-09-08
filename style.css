@@ -68,9 +68,9 @@ body, html {
   transform-origin: left center;
   transform-style: preserve-3d;
   transition: transform 1s ease-in-out, box-shadow 1s;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
   border-radius: 12px;
   overflow: hidden;
+  backface-visibility: hidden;
 }
 
 /* Stacking */
@@ -115,3 +115,4 @@ body, html {
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.8),
                0 0 20px rgba(255, 192, 203, 0.8);
 }
+
