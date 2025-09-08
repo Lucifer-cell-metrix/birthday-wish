@@ -13,10 +13,9 @@ function drawMatrix() {
   ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "rgb(255, 50, 50)"; // 🔴 red neon
+  ctx.fillStyle = "rgb(255, 50, 50)";
   ctx.font = fontSize + "px monospace";
   ctx.shadowColor = "red";
-  
 
   for (let i = 0; i < drops.length; i++) {
     const text = letters[Math.floor(Math.random() * letters.length)];
@@ -30,10 +29,10 @@ function drawMatrix() {
 }
 setInterval(drawMatrix, 35);
 
-// Countdown → Messages → Gif → Flipbook
+// Countdown → Messages → Video → Flipbook
 const countdownEl = document.getElementById("countdown");
 const messageEl = document.getElementById("message");
-const gifContainer = document.getElementById("gif-container");
+const videoEl = document.getElementById("birthday-video");
 
 let countdown = 3;
 countdownEl.textContent = countdown;
@@ -62,16 +61,16 @@ function showMessages() {
         setTimeout(showNext, 500);
       }, 1500);
     } else {
-      showGif();
+      showVideo();
     }
   };
   showNext();
 }
 
-function showGif() {
-  gifContainer.style.display = "block";
+function showVideo() {
+  videoEl.style.display = "block";
   setTimeout(() => {
-    gifContainer.style.display = "none";
+    videoEl.style.display = "none";
     showFlipbook();
   }, 3000);
 }
@@ -81,12 +80,9 @@ function showFlipbook() {
   flipbook.style.display = "block";
 
   const pages = document.querySelectorAll(".page");
-
   pages.forEach((page, i) => {
     setTimeout(() => {
-      page.style.transform = "rotateY(180deg)"; // ✅ flip forward so back is visible
-    }, i * 2000); // delay for sequential flipping
+      page.classList.add("flipped");
+    }, i * 2000);
   });
 }
-
-
