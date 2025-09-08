@@ -81,9 +81,12 @@ function showFlipbook() {
   flipbook.style.display = "block";
 
   const pages = document.querySelectorAll(".page");
+
   pages.forEach((page, i) => {
     setTimeout(() => {
-      page.style.transform = "rotateY(-180deg)";
-    }, i * 2000);
+      page.style.transform = "rotateY(180deg)"; // ✅ flip forward so back is visible
+    }, i * 2000); // delay for sequential flipping
   });
 }
+
+
