@@ -1,88 +1,114 @@
-// Matrix Effect (RED)
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
-
-const letters = "01";
-const fontSize = 16;
-const columns = canvas.width / fontSize;
-const drops = Array(Math.floor(columns)).fill(1);
-
-function drawMatrix() {
-  ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = "rgb(255, 50, 50)";
-  ctx.font = fontSize + "px monospace";
-  ctx.shadowColor = "red";
-
-  for (let i = 0; i < drops.length; i++) {
-    const text = letters[Math.floor(Math.random() * letters.length)];
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-      drops[i] = 0;
-    }
-    drops[i]++;
-  }
-}
-setInterval(drawMatrix, 35);
-
-// Countdown → Messages → Video → Flipbook
 const countdownEl = document.getElementById("countdown");
 const messageEl = document.getElementById("message");
-const videoEl = document.getElementById("birthday-video");
+const gifContainer = document.getElementById("gif-container");
+const flipbook = document.getElementById("flipbook");
+const replayBtn = document.getElementById("replay");
 
-let countdown = 3;
-countdownEl.textContent = countdown;
+function startExperience() {
+  // Reset state
+  countdownEl.style.display = "block";
+  countdownEl.style.opacity = "1";
+  countdownEl.style.animation = "fadeInOut 1s ease-in-out forwards";
+  messageEl.style.display = "none";
+  gifContainer.style.display = "none";
+  flipbook.style.display = "none";
+  replayBtn.style.display = "none";
+  document.querySelectorAll(".page").forEach((page, i) => {
+    page.classList.remove("flipped");
+    page.style.zIndex = 100 - i; // Unflipped: highest z-index for first page
+  });
 
-const interval = setInterval(() => {
-  countdown--;
-  if (countdown > 0) {
-    countdownEl.textContent = countdown;
-  } else {
-    clearInterval(interval);
-    countdownEl.textContent = "";
-    showMessages();
-  }
-}, 1000);
+  let countdown = 5;
+  countdownEl.textContent = countdown;
+
+  const interval = setInterval(() => {
+    countdown--;
+    if (countdown > 0) {
+      countdownEl.textContent = countdown;
+      countdownEl.style.animation = "";
+      void countdownEl.offsetWidth;
+      countdownEl.style.animation = "fadeInOut 1s ease-in-out forwards";
+    } else {
+      clearInterval(interval);
+      countdownEl.style.display = "none";
+      showMessages();
+    }
+  }, 1000);
+}
 
 function showMessages() {
+  messageEl.style.display = "block";
   const texts = ["Happy", "Birthday", "To", "You"];
   let i = 0;
 
-  const showNext = () => {
+  function showNext() {
     if (i < texts.length) {
       messageEl.textContent = texts[i];
+      messageEl.style.animation = "";
+      void messageEl.offsetWidth;
+      messageEl.style.animation = "fadeInOut 1.5s ease-in-out forwards";
       i++;
       setTimeout(() => {
         messageEl.textContent = "";
         setTimeout(showNext, 500);
       }, 1500);
     } else {
-      showVideo();
+      messageEl.style.display = "none";
+      showGif();
     }
-  };
+  }
   showNext();
 }
 
-function showVideo() {
-  videoEl.style.display = "block";
+function showGif() {
+  gifContainer.style.display = "block";
   setTimeout(() => {
-    videoEl.style.display = "none";
+    gifContainer.style.display = "none";
     showFlipbook();
-  }, 3000);
+  }, 4000);
 }
 
 function showFlipbook() {
-  const flipbook = document.getElementById("flipbook");
-  flipbook.style.display = "block";
+  flipbook.style.display = "flex";
+  const pages = document.querySelectorAll(".book .page");
+  let currentPage = 0;
 
-  const pages = document.querySelectorAll(".page");
+  function flipNextPage() {
+    if (currentPage < pages.length) {
+      pages[currentPage].style.transformOrigin = "left center";
+      pages[currentPage].classList.add("flipped");
+      pages[currentPage].style.zIndex = -100 - currentPage; // Flipped: lower z-index
+      currentPage++;
+      setTimeout(flipNextPage, 2000);
+    } else {
+      setTimeout(() => {
+        replayBtn.style.display = "block";
+      }, 500);
+    }
+  }
+
   pages.forEach((page, i) => {
-    setTimeout(() => {
-      page.classList.add("flipped");
-    }, i * 2000);
+    page.style.zIndex = 100 - i; // Initial z-index: first page on top
+    page.addEventListener("click", () => {
+      page.style.transformOrigin = "left center";
+      page.classList.toggle("flipped");
+      page.style.zIndex = page.classList.contains("flipped") ? -100 - i : 100 - i;
+    });
+
+    page.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === "Space") {
+        e.preventDefault();
+        page.style.transformOrigin = "left center";
+        page.classList.toggle("flipped");
+        page.style.zIndex = page.classList.contains("flipped") ? -100 - i : 100 - i;
+      }
+    });
   });
+
+  setTimeout(flipNextPage, 1500);
 }
+
+replayBtn.addEventListener("click", startExperience);
+
+// Start on load
+startExperience();
