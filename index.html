@@ -1,53 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Birthday Surprise</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <canvas id="matrix"></canvas>
+  <div id="countdown" role="timer" aria-live="polite"></div>
+  <div id="message" role="alert" aria-live="assertive"></div>
 
-  <div id="countdown"></div>
-  <div id="message"></div>
-<!-- Cartoon GIF (hidden at first) -->
-<!-- Cartoon Video (hidden at first) -->
-<div id="gif-container">
-  <video id="birthday-video" autoplay loop muted>
-    <source src="/cute.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-</div>
+  <div id="gif-container" role="region" aria-label="Birthday video">
+    <video id="birthday-video" autoplay loop muted preload="auto">
+      <source src="D:\birthday-project\cute.mp4" type="video/mp4">
+      A cute birthday animation video.
+    </video>
+  </div>
 
-
-  <!-- Flipbook -->
-  <div id="flipbook">
+  <div id="flipbook" role="region" aria-label="Birthday flipbook">
     <div class="book">
-      <!-- Page 1 -->
-      <div class="page">
+      <div class="page" tabindex="0">
         <div class="front"><span>🎉 Happy Birthday 🎂</span></div>
         <div class="back"><span>✨ Wishing you endless joy ✨</span></div>
       </div>
-      <!-- Page 2 -->
-      <div class="page">
+      <div class="page" tabindex="0">
         <div class="front"><span>💖 Stay Blessed 💖</span></div>
         <div class="back"><span>🌟 Shine Bright 🌟</span></div>
       </div>
-      <!-- Page 3 -->
-      <div class="page">
+      <div class="page" tabindex="0">
         <div class="front"><span>🎁 Dreams Come True 🎈</span></div>
         <div class="back"><span>🥳 Celebrate Your Day 🥳</span></div>
       </div>
     </div>
+    <button id="replay" aria-label="Replay birthday surprise">Replay</button>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-
-
-
-
-
