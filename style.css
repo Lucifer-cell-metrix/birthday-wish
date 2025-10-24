@@ -7,48 +7,75 @@ body, html {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: black;
+  background: linear-gradient(135deg, #ff6f91, #6b7280, #a78bfa);
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
   color: white;
   font-family: "Dancing Script", cursive;
 }
 
-/* Matrix canvas */
-#matrix {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: black;
-  z-index: 0;
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Countdown & Messages */
 #countdown, #message {
   position: absolute;
-  color: #ff0000;
-  font-size: 3rem;
-  z-index: 2;
-  text-shadow: 0 0 15px #ff0000, 0 0 30px #ff4444;
+  top: 20%;
+  color: #ffffff;
+  font-size: 3.5rem;
+  z-index: 3;
   text-align: center;
   width: 100%;
+  opacity: 1;
 }
 
-/* Cartoon Video */
-#birthday-video {
+#message {
+  top: 35%;
+  font-size: 3rem;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: scale(0.8); }
+  20% { opacity: 1; transform: scale(1); }
+  80% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.2); }
+}
+
+/* Video container */
+#gif-container {
   display: none;
   position: absolute;
-  width: 250px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  background: radial-gradient(circle, rgba(255,192,203,0.2), transparent);
+  padding: 20px;
+  border-radius: 20px;
+}
+#birthday-video {
+  width: 350px;
+  max-width: 85vw;
   border-radius: 15px;
-  box-shadow: 0 0 20px rgba(255,0,0,0.8);
-  z-index: 2;
 }
 
-/* Flipbook */
+/* Flipbook container */
 #flipbook {
   display: none;
-  width: 380px;
-  height: 260px;
-  perspective: 1500px;
-  z-index: 2;
+  width: 450px;
+  max-width: 90vw;
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .book {
@@ -56,65 +83,118 @@ body, html {
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .page {
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 0; left: 0;
-  transform-origin: left center;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  transform-origin: center center;
   transform-style: preserve-3d;
-  transition: transform 1s ease-in-out, box-shadow 1s;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  transition: transform 1s ease-in-out;
   border-radius: 12px;
-  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  cursor: pointer;
+  background: white;
 }
 
-/* Flip class */
 .page.flipped {
-  transform: rotateY(-180deg);
+  transform: translateX(-50%) rotateY(-180deg);
 }
 
-/* Stacking */
-.page:nth-child(1) { z-index: 3; }
-.page:nth-child(2) { z-index: 2; }
-.page:nth-child(3) { z-index: 1; }
+.page:focus {
+  outline: 2px solid #ff0000;
+}
 
-.page .front, 
-.page .back {
+.front, .back {
   width: 100%;
   height: 100%;
   position: absolute;
-  backface-visibility: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.6rem;
+  font-size: 2rem;
   font-weight: bold;
   font-family: "Dancing Script", cursive;
   padding: 20px;
   text-align: center;
-  box-sizing: border-box;
   border: 3px solid gold;
   border-radius: 12px;
+  backface-visibility: hidden;
+  box-sizing: border-box;
 }
 
-/* Fancy Gradients */
-.page .front {
+.front {
   background: linear-gradient(135deg, #fff8e7, #ffe7f3);
   color: #d6336c;
+  z-index: 2;
 }
 
-.page .back {
+.back {
   background: linear-gradient(135deg, #e7f5ff, #f3f0ff);
   color: #364fc7;
   transform: rotateY(180deg);
+  z-index: 1;
 }
 
-/* Glow */
-.page .front span, 
+.page .front span,
 .page .back span {
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.8),
                0 0 20px rgba(255, 192, 203, 0.8);
+}
+
+/* Replay button */
+#replay {
+  display: none;
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 25px;
+  font-size: 1.5rem;
+  font-family: "Dancing Script", cursive;
+  background: #ff0000;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  z-index: 4;
+}
+
+#replay:hover {
+  background: #e60000;
+}
+
+#replay:focus {
+  outline: 2px solid white;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  #countdown {
+    font-size: 2.5rem;
+  }
+  #message {
+    font-size: 2rem;
+  }
+  #flipbook {
+    width: 320px;
+    height: 220px;
+  }
+  .page .front span, .page .back span {
+    font-size: 1.5rem;
+  }
+  #birthday-video {
+    width: 250px;
+  }
+  #replay {
+    padding: 8px 15px;
+    font-size: 1.2rem;
+  }
 }
