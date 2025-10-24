@@ -11,13 +11,12 @@
   <div id="countdown" role="timer" aria-live="polite"></div>
   <div id="message" role="alert" aria-live="assertive"></div>
 
-  <div id="gif-container" role="region" aria-label="Birthday video">
-    <video id="birthday-video" autoplay loop muted preload="auto">
-      <source src="D:\birthday-project\cute.mp4" type="video/mp4">
-      A cute birthday animation video.
-    </video>
-  </div>
-
+ <div id="gif-container" role="region" aria-label="Birthday video">
+  <video id="birthday-video" autoplay loop muted playsinline preload="auto" style="width: 350px; max-width: 85vw; border-radius: 15px;">
+    <source src="cute.mp4" type="video/mp4">  <!-- Relative path; change to raw URL if needed -->
+    Your browser does not support the video tag. <!-- Fallback text -->
+  </video>
+</div>
   <div id="flipbook" role="region" aria-label="Birthday flipbook">
     <div class="book">
       <div class="page" tabindex="0">
@@ -39,3 +38,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
